@@ -17,6 +17,7 @@ use App\Models\sport;
 
 
 Route::resource('/sports','SportsController');
+Route::resource('/locations','LocationsController');
 
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
