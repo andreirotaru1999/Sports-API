@@ -28,8 +28,9 @@ class SportsController extends Controller
             'name'=>'required',
             'cost'=>'required',
         ]);
-
-        return sport::create($request->all());
+        $sport=sport::create($request->all());
+        return response()->json($sport,201);
+        
         
     }
 
@@ -57,9 +58,10 @@ class SportsController extends Controller
             'name'=>'required',
             'cost'=>'required',
         ]);
-        $sport = sport::find($id);
+
+        
         $sport->update($request->all());
-        return  $sport;
+        return response()->json($sport,200);
 
     }
 
@@ -71,7 +73,8 @@ class SportsController extends Controller
      */
     public function destroy(sport $sport)
     {
-        return sport::destroy($id);
+        $sport->delete();
+        return response()->json("{count: 1}",200);
  
     }
 }

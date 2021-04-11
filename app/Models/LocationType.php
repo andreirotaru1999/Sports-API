@@ -12,4 +12,10 @@ class LocationType extends Model
         'cost'
     ];
     protected $table = 'location_types';
+
+    public function type()
+    {
+        return $this->hasMany(location::class);
+        //return $this->hasMany(App/Models/location);
+    }
 }
