@@ -25,11 +25,9 @@ class LocationsController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name'=>'required',
-            'LocationType'=>'required',
-        ]);
-        return location::create($request->all());
+
+        $location=location::create($request->all());
+        return response()->json($location,201);
     }
 
     /**
@@ -53,12 +51,11 @@ class LocationsController extends Controller
     {
         $request->validate([
             'name'=>'required',
-            'LocationType'=>'required',
         ]);
 
-        $location = location::find($id);
         $location->update($request->all());
-        return  $location;
+        return response()->json($location,200);
+
     }
 
     /**
@@ -69,6 +66,7 @@ class LocationsController extends Controller
      */
     public function destroy(location $location)
     {
-        return location::destroy($id);
+        $location->delete();
+        return response()->json("{count: 1}",200);
     }
 }

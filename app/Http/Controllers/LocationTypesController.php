@@ -29,7 +29,8 @@ class LocationTypesController extends Controller
         $request->validate([
             'name'=>'required',
         ]);
-        return LocationType::create($request->all());
+        $LocationType=LocationType::create($request->all());
+        return response()->json($LocationType,201);
     }
 
     /**
@@ -51,14 +52,15 @@ class LocationTypesController extends Controller
      * @param  \App\Models\LocationType
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, LocationType $LocationType)
     {
         $request->validate([
             'name'=>'required',
         ]);
-        $LocationType = LocationType::find($id);
+
         $LocationType->update($request->all());
-        return  $LocationType;
+        return response()->json($LocationType,200);
+
     }
 
     /**
@@ -67,8 +69,9 @@ class LocationTypesController extends Controller
      * @param  \App\Models\LocationType
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(LocationType $LocationType)
     {
-        return LocationType::destroy($id);
+        $LocationType->delete();
+        return response()->json("{count: 1}",200);
     }
 }

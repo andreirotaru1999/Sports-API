@@ -25,7 +25,7 @@ class CreateLocationTypesTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function type()
     {
         Schema::dropIfExists('location_types');
     }

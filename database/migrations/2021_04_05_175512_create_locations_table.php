@@ -19,7 +19,6 @@ class CreateLocationsTable extends Migration
             $table->unsignedBigInteger('id_parinte')->nullable();
             $table->unsignedBigInteger('location_types_id');
             $table->foreign('location_types_id')->references('id')->on('location_types');
-            $table->string('LocationType');
             $table->timestamps();
         });
     }

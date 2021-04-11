@@ -10,9 +10,13 @@ class location extends Model
     protected $fillable = [
         'name',
         'id_parinte',
-        'LocationType',
-        'cost'
+        'location_types_id'
     ];
 
     protected $table = 'locations';
+
+    public function gettype()
+{
+    return $this->belongsTo(Post::LocationType, 'flocation_types_id', 'id');
+}
 }
