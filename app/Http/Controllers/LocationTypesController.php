@@ -74,4 +74,5 @@ class LocationTypesController extends Controller
         $LocationType->delete();
         return response()->json("{count: 1}",200);
     }
+
 }

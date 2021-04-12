@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\sport;
+use App\Models\location;
+use App\Models\location_sport;
 use Illuminate\Http\Request;
 
 class SportsController extends Controller
@@ -26,7 +28,6 @@ class SportsController extends Controller
     {
         $request->validate([
             'name'=>'required',
-            'cost'=>'required',
         ]);
         $sport=sport::create($request->all());
         return response()->json($sport,201);
@@ -76,5 +77,13 @@ class SportsController extends Controller
         $sport->delete();
         return response()->json("{count: 1}",200);
  
+    }
+
+    public function assign(Request $request)
+    {
+        $sport=$request->input("sport_id");
+        $location=$request->input("location_id");
+        $location_sport=location_sport::create($request->all());
+        return response()->json($location_sport,201);
     }
 }

@@ -19,4 +19,5 @@ class location extends Model
 {
     return $this->belongsTo(Post::LocationType, 'flocation_types_id', 'id');
 }
+    
 }
