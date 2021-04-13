@@ -25,7 +25,7 @@ Route::get('/location_sport','Location_sports_Controller@index');
 Route::get('/location_sport/{location_sport}','Location_sports_Controller@show');
 Route::patch('/location_sport/{location_sport}','Location_sports_Controller@update');
 Route::delete('/location_sport/{location_sport}','Location_sports_Controller@destroy');
-
+Route::get('/location_sport/{location}/location','Location_sports_Controller@GetByLocation');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

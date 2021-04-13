@@ -7,14 +7,17 @@ use App\Models\sport;
 use App\Models\location;
 use App\Models\location_sport;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use DateTime;
 class Location_sports_Controller extends Controller
 {
+    //Return array of location_sports
     public function index()
     {
         return location_sport::all();
     }
-   
+
+   //Create new location_sport
     public function assign(Request $request)
     {
         $sport=$request->input("sport_id");
@@ -23,17 +26,20 @@ class Location_sports_Controller extends Controller
         return response()->json($location_sport,201);
     }
 
+    //Return a location_sport by id
     public function show($id)
     {
         return location_sport::find($id);
     }
 
+    //Update a location_sport 
     public function update(Request $request,location_sport $location_sport)
     {
         $location_sport->update($request->all());
         return response()->json($location_sport,200);
     }
 
+    //Delete a location_sport
     public function destroy(location_sport $location_sport)
     {
         $location_sport->delete();
@@ -41,29 +47,75 @@ class Location_sports_Controller extends Controller
  
     }
 
+    //Return filtered array of location_sports. Possible filters are sport_id, start_date, end_date
     public function getsport(Request $request)
     {   
-        $id=$request->input((array)'id');
-        $start_date=$request->input("start_date");
-        $end_date=$request->input("end_date");
-        // $datetime1 = new DateTime($start_date);
-        // $datetime2 = new DateTime($end_date);
-        $location_sport=DB::table("location_sport")
+        //Sanitize date parameters
+        $validator = Validator::make($request->all(), [
+            'start_date' => 'date',
+            'end_date' => 'date|after_or_equal:start_date'
+            ]);
+    
+        if ($validator->fails()) {
+            return response(
+                $validator->errors(),
+                500
+            );
+        }
+
+        //check if id parameter exists
+        if($request->input('id')){
+            $id=explode(",",$request->input('id'));
+        }
+
+        //check if start_date parameter exists
+        if($request->input("start_date")) {
+            $start_date=$request->input("start_date");
+        }
+
+        //check if end_date parameter exists
+        if($request->input("end_date")) {
+            $end_date=$request->input("end_date");
+        }
+
+        $query=DB::table("location_sport")
                                 ->join('locations','location_sport.location_id', '=', 'locations.id')
-                                ->select('locations.name','location_sport.cost','locations.id_parinte','location_sport.start_date','location_sport.end_date')
-                                ->whereIn("sport_id", $id)
-                                ->where("start_date", "<=", $start_date)
-                                ->where("end_date", ">=", $end_date)
-                                ->orderby("cost", "asc")
-                                ->get();
-        // $interval = $datetime1->diff($datetime2);
-        // $days = $interval->format('%a');
-        return $location_sport;
-        //  var_dump($date);
-        //   var_dump($days);
-        //  die;
+                                ->join('sports','location_sport.sport_id' , '=', 'sports.id')
+                                ->select('locations.name as locationName','location_sport.cost','location_sport.start_date','location_sport.end_date', 'sports.name as sportName');
+        
+        //if $id exists, modify query
+        if(isset($id)) {
+            $query->whereIn("sport_id", $id);
+        }
+
+        //if $start_date exists, modify query
+        if(isset($start_date)){
+            $query->where("start_date", "<=", $start_date);
+        }
+
+        //if $end_date exists, modify query
+        if(isset($end_date)){
+            $query->where("end_date", ">=", $end_date);
+        }
+
+        if(isset($start_date) && isset($end_date)){
+            $query->where("start_date", "<=", "end_date");
+        }
+
+        $location_sports=$query->orderby("cost", "asc")
+                        ->get();
+
+        //if $start_date and $end_date both exist, calculate the number of days between them,
+        //and add a new totalCost property to each location_sport
+        if(isset($start_date) && isset($end_date)){
+            $datetime1 = new DateTime($start_date);
+            $datetime2 = new DateTime($end_date);
+            $interval = $datetime1->diff($datetime2);
+            $days = intval($interval->format('%a'));
+            foreach($location_sports as $location_sport){
+                $location_sport->totalCost = $location_sport->cost * $days;
+            }
+        }
+        return $location_sports;
     }
-
-
-
 }
