@@ -14,11 +14,12 @@ class CreateLocationsTable extends Migration
     public function up()
     {
         Schema::create('locations', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('id_parinte')->nullable();
             $table->unsignedBigInteger('location_types_id');
-            $table->foreign('location_types_id')->references('id')->on('location_types');
+            $table->foreign('location_types_id')->references('id')->on('location_types')->onDelete('cascade');
             $table->timestamps();
         });
     }

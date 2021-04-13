@@ -46,8 +46,8 @@ class Location_sports_Controller extends Controller
         $id=$request->input((array)'id');
         $start_date=$request->input("start_date");
         $end_date=$request->input("end_date");
-        $datetime1 = new DateTime($start_date);
-        $datetime2 = new DateTime($end_date);
+        // $datetime1 = new DateTime($start_date);
+        // $datetime2 = new DateTime($end_date);
         $location_sport=DB::table("location_sport")
                                 ->join('locations','location_sport.location_id', '=', 'locations.id')
                                 //->join('sports','location_sport.sport_id' , '=', 'sports.id')
@@ -57,8 +57,8 @@ class Location_sports_Controller extends Controller
                                 ->where("end_date", ">=", $end_date)
                                 ->orderby("cost", "asc")
                                 ->get();
-        $interval = $datetime1->diff($datetime2);
-        $days = $interval->format('%a');
+        // $interval = $datetime1->diff($datetime2);
+        // $days = $interval->format('%a');
         return $location_sport;
         //  var_dump($date);
         //   var_dump($days);
