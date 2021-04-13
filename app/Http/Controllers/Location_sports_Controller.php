@@ -10,6 +10,37 @@ use Illuminate\Support\Facades\DB;
 
 class Location_sports_Controller extends Controller
 {
+    public function index()
+    {
+        return location_sport::all();
+    }
+   
+    public function assign(Request $request)
+    {
+        $sport=$request->input("sport_id");
+        $location=$request->input("location_id");
+        $location_sport=location_sport::create($request->all());
+        return response()->json($location_sport,201);
+    }
+
+    public function show($id)
+    {
+        return location_sport::find($id);
+    }
+
+    public function update(Request $request,location_sport $location_sport)
+    {
+        $location_sport->update($request->all());
+        return response()->json($location_sport,200);
+    }
+
+    public function destroy(location_sport $location_sport)
+    {
+        $location_sport->delete();
+        return response()->json("{count: 1}",200);
+ 
+    }
+
     public function getsport(Request $request)
     {   
         $id=$request->input((array)'id');
@@ -27,12 +58,5 @@ class Location_sports_Controller extends Controller
         //  die;
     }
 
-    public function assign(Request $request)
-    {
-        $sport=$request->input("sport_id");
-        $location=$request->input("location_id");
-        $location_sport=location_sport::create($request->all());
-        return response()->json($location_sport,201);
-    }
 
 }
