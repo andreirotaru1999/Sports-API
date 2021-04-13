@@ -79,11 +79,5 @@ class SportsController extends Controller
  
     }
 
-    public function assign(Request $request)
-    {
-        $sport=$request->input("sport_id");
-        $location=$request->input("location_id");
-        $location_sport=location_sport::create($request->all());
-        return response()->json($location_sport,201);
-    }
+   
 }

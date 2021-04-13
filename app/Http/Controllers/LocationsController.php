@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\sport;
 use App\Models\location;
 use App\Models\location_sport;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class LocationsController extends Controller
@@ -73,17 +72,5 @@ class LocationsController extends Controller
         return response()->json("{count: 1}",200);
     }
 
-    public function getsport(Request $request)
-    {   
-        $id=$request->input("id");
-        $date_start=$request->input("date_start");
-        $date_end=$request->input("date_end");
-        $location_sport=DB::table("location_sport")
-                                ->where("sport_id","=",$id)
-                                ->get();
-        echo "hello";
-        var_dump($location_sport);
-        die;
-    
-    }
+
 }

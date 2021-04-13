@@ -19,8 +19,8 @@ use App\Models\sport;
 Route::resource('/sports','SportsController');
 Route::resource('/locations','LocationsController');
 Route::resource('/LocationTypes','LocationTypesController');
-Route::post('/sports/assign','SportsController@assign');
-Route::get('/locations/{location}/sport','LocationsController@getsport');
+Route::post('/sports/assign','Location_sports_Controller@assign');
+Route::get('/sports/{sport}/location','Location_sports_Controller@getsport');
 
 
 
