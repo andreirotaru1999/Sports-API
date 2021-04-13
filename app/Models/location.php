@@ -15,9 +15,12 @@ class location extends Model
 
     protected $table = 'locations';
 
-    public function gettype()
-{
-    return $this->belongsTo(Post::LocationType, 'flocation_types_id', 'id');
-}
+    public function gettype(){
+        return $this->belongsTo(Post::LocationType, 'location_types_id', 'id');
+    }
+    public function getparent(){
+        $this->belongsTo(self::class, 'parent_id');
+    }
+    
     
 }
