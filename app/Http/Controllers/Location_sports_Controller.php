@@ -50,7 +50,6 @@ class Location_sports_Controller extends Controller
         // $datetime2 = new DateTime($end_date);
         $location_sport=DB::table("location_sport")
                                 ->join('locations','location_sport.location_id', '=', 'locations.id')
-                                //->join('sports','location_sport.sport_id' , '=', 'sports.id')
                                 ->select('locations.name','location_sport.cost','locations.id_parinte','location_sport.start_date','location_sport.end_date')
                                 ->whereIn("sport_id", $id)
                                 ->where("start_date", "<=", $start_date)
@@ -64,6 +63,7 @@ class Location_sports_Controller extends Controller
         //   var_dump($days);
         //  die;
     }
+
 
 
 }
