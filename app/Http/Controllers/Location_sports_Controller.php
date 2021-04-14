@@ -67,7 +67,6 @@ class Location_sports_Controller extends Controller
         if($request->input('id')){
             $id=explode(",",$request->input('id'));
         }
-
         //check if start_date parameter exists
         if($request->input("start_date")) {
             $start_date=$request->input("start_date");
@@ -96,10 +95,6 @@ class Location_sports_Controller extends Controller
         //if $end_date exists, modify query
         if(isset($end_date)){
             $query->where("end_date", ">=", $end_date);
-        }
-
-        if(isset($start_date) && isset($end_date)){
-            $query->where("start_date", "<=", "end_date");
         }
 
         $location_sports=$query->orderby("cost", "asc")
